@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    image: nodejs
+    deploy:
+      restart_policy:
+        condition: on-failure
+    expose:
+      - 3000
+    volumes:
+      - /c/Users/Beci/docker-nodejs:$HOME/app
+  nginx:
+    image: nginx:alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - web
+    links:
+      - web:web
+    volumes:
+      - /c/Users/Beci/docker-nodejs/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /c/Users/Beci/docker-nodejs:/usr/src/app
+    ports:
+      - 80:80
